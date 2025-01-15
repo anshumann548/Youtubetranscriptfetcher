@@ -3,6 +3,7 @@ package com.transcript.fetch;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,8 +14,7 @@ import io.restassured.response.Response;
 
 public class paramcatcher {
 
-    // Constants
-    public static final String VIDEO_URL = "https://www.youtube.com/watch?v=S5v15H-kr5M";
+    String VIDEO_URL;
 
     /**
      * Handles Brotli-compressed or uncompressed responses and converts them to
@@ -45,9 +45,10 @@ public class paramcatcher {
     /**
      * Extracts the "params" value from the YouTube video page.
      *
+     * @param VIDEO_URL the YouTube video URL
      * @return the extracted "params" value
      */
-    public static String getParams() {
+    public String getParams(String VIDEO_URL) {
         // Step 1: Get the HTML from the video URL
         Response getResponse = RestAssured.given().when().get(VIDEO_URL);
         String html = BrResponseToJSONStr(getResponse);
@@ -67,16 +68,36 @@ public class paramcatcher {
     }
 
     /**
-     * Main method to run the paramcatcher class.
+     * Main method to run the ParamCatcher class.
      *
      * @param args command-line arguments
      */
     public static void main(String[] args) {
-        String params = getParams();
-        if (params != null) {
-            System.out.println("Extracted params: " + params);
-        } else {
-            System.err.println("Failed to extract 'params'.");
-        }
+        paramcatcher param = new paramcatcher();
+        param.fetchurl();
+        // param.getParams();
     }
+
+    public String fetchurl() {
+        // Use Scanner to get the video path from the user
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the YouTube video path (e.g., S5v15H-kr5M): ");
+        String videoPath = scanner.nextLine();
+        scanner.close();
+
+        // Prefix the base URL
+        VIDEO_URL = "https://www.youtube.com/watch?v=" + videoPath;
+
+        // Validate user input
+        if (videoPath.isBlank()) {
+            System.err.println("Invalid input. Please provide a valid YouTube video path.");
+
+        }
+
+        System.out.println("Processing URL: " + VIDEO_URL);
+
+        // Extract the "params" value
+        return VIDEO_URL;
+    }
+
 }
