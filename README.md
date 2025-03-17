@@ -71,7 +71,7 @@ Youtube Transcript Fetching tool
 #### How to use 
 ```
 1.Clone the repository
-2.Run the test class
+2.Run command : mvn exec:java -Dexec.mainClass="com.transcript.fetch.YouTubeTranscriptFetcher" -X
 3.Enter YT video query param value for e.g. "FpB9fBg9ZJk" form url any url for e.g. "https://www.youtube.com/watch?v=FpB9fBg9ZJk"
 4.It will provide transcript if available
 
